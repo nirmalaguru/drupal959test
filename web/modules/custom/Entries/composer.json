@@ -1,0 +1,12 @@
+{
+    "name": "Entries",
+    "type": "drupal-module",
+    "description": "Entries from external API",
+    "keywords": ["Drupal"],
+    "homepage": "https://www.drupal.org/project/entries",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/entries",
+        "source": "http://cgit.drupalcode.org/entries"
+    }
+}

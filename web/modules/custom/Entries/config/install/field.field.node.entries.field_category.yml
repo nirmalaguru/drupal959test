@@ -1,0 +1,21 @@
+uuid: 20947dd9-f964-4718-b4d9-d9f6a91e0cc3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_category
+    - node.type.entries
+  module:
+    - options
+id: node.entries.field_category
+field_name: field_category
+entity_type: node
+bundle: entries
+label: Category
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

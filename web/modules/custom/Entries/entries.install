@@ -1,0 +1,32 @@
+<?php 
+
+/**
+ * Implements hook_uninstall().
+ */
+function entries_uninstall($is_syncing) {
+
+  _disable_entries();
+  
+ if(!$is_syncing) {
+    // Remove module-specific config which can not be removed during
+    // uninstallation automatically.
+    \Drupal::service('entries.get_data_user_node')->removeConfig();
+  }
+  
+   \Drupal::state()
+    ->delete('entries.foo');
+  
+  // Delete related nodes and node types.
+  $content_types = [
+    'entries'
+  ];
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', $content_types, 'IN');
+  $nids = $query->execute();
+  foreach ($nids as $nid) {
+    $node_load = Node::load($nid);
+    if ($node_load) {
+      $node_load->delete();
+    }
+  }
+}
