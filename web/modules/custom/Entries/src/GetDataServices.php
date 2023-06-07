@@ -15,7 +15,7 @@ class GetDataServices {
 	public function __construct(Connection $connection) {
 	 $this->database = $connection;
 	}
-  
+
   /**
     * Returns list of nids from node table according to passed user id.
   */

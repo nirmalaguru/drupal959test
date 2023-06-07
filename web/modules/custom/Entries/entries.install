@@ -1,32 +1,24 @@
-<?php 
+<?php
+use Drupal\comment\Entity\Comment;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\apihub\ApihubCustomClass;
+use Drupal\Core\File;
 
-/**
- * Implements hook_uninstall().
- */
-function entries_uninstall($is_syncing) {
+function entries_uninstall() {
 
-  _disable_entries();
-  
- if(!$is_syncing) {
-    // Remove module-specific config which can not be removed during
-    // uninstallation automatically.
-    \Drupal::service('entries.get_data_user_node')->removeConfig();
+  // Delete all nodes of given content type.
+  $storage_handler = \Drupal::entityTypeManager()
+    ->getStorage('node');
+  $nodes = $storage_handler->loadByProperties(['type' => 'entries']);
+  $storage_handler->delete($nodes);
+
+  // Delete content type.
+  $content_type = \Drupal::entityTypeManager()
+    ->getStorage('node_type')
+    ->load('entries');
+  $content_type->delete();
   }
-  
-   \Drupal::state()
-    ->delete('entries.foo');
-  
-  // Delete related nodes and node types.
-  $content_types = [
-    'entries'
-  ];
-  $query = \Drupal::entityQuery('node')
-    ->condition('type', $content_types, 'IN');
-  $nids = $query->execute();
-  foreach ($nids as $nid) {
-    $node_load = Node::load($nid);
-    if ($node_load) {
-      $node_load->delete();
-    }
-  }
-}

@@ -70,4 +70,31 @@ class GetDataServicesController extends ControllerBase {
       '#rows' => $rows,
     ];   
   }
+  public function getexternalapis(){
+    $url = 'https://api.publicapis.org/entries';
+    $response = \Drupal::httpClient()->get($url);
+    $data = json_decode($response->getBody(), TRUE);
+   
+	    foreach ($data as $element) {
+  		$i=0;
+		   foreach ($element as $elements){
+
+				$node = Node::create([
+				'type' => 'entries',
+				'langcode' => 'en',
+				'title' => $elements['API'],
+				'body' => [
+				'summary' => '',
+				'value' => $elements['Description'],
+				'format' => 'full_html',
+				],
+				]);	
+				$node->save();
+				if ($i===60) {
+				break;
+				}
+				$i++;
+			}
+		}
+	}
 }
